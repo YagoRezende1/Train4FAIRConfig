@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+
+# METADATA_DAV  ***************************************************************************************
+  metadata_dav:
+    image: bytemark/webdav
+    restart: always
+    ports:
+      - "9999:80"
+    environment:
+      AUTH_TYPE: Digest
+      USERNAME: gofair
+      PASSWORD: gofair
+    volumes:
+      - /webdav/metadata:/var/lib/dav
+        
+# LANDINGPAGE_DAV  ***************************************************************************************
+  landingpage_dav:
+    image: bytemark/webdav
+    restart: always
+    ports:
+      - "9998:80"
+    environment:
+      AUTH_TYPE: Digest
+      USERNAME: gofair
+      PASSWORD: gofair
+    volumes:
+      - /webdav/landingpage:/var/lib/dav
+    links:
+    - metadata_dav
+    depends_on:
+    - metadata_dav
+    
+# DOCUMENTATION_DAV  ***************************************************************************************
+  documentation_dav:
+    image: bytemark/webdav
+    restart: always
+    ports:
+      - "9997:80"
+    environment:
+      AUTH_TYPE: Digest
+      USERNAME: gofair
+      PASSWORD: gofair
+    volumes:
+      - /webdav/documentation:/var/lib/dav
+    links:
+    - metadata_dav
+    depends_on:
+    - metadata_dav

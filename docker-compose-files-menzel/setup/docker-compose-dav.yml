@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+
+# METADATA_DAV  ***************************************************************************************
+  metadata_dav:
+    image: visity/webdav
+    ports:
+      - "9999:80"
+    volumes:
+      - /webdav/metadata:/var/www
+        
+# LANDINGPAGE_DAV  ***************************************************************************************
+  landingpage_dav:
+    image: visity/webdav
+    ports:
+      - "9998:80"
+    volumes:
+      - /webdav/landingpage:/var/www
+    links:
+    - metadata_dav
+    depends_on:
+    - metadata_dav
+    
+# DOCUMENTATION_DAV  ***************************************************************************************
+  documentation_dav:
+    image: visity/webdav
+    ports:
+      - "9997:80"
+    volumes:
+      - /webdav/documentation:/var/www
+    links:
+    - metadata_dav
+    depends_on:
+    - metadata_dav
